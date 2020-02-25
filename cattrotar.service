@@ -1,0 +1,14 @@
+[Unit]
+Description=powermate
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/cattrotar
+ExecStart=/usr/bin/python3 -u /home/pi/cattrotar/cattrotar.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
