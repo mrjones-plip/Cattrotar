@@ -37,7 +37,7 @@ class cattrotar:
         GPIO.setup(self.dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.sw, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-        GPIO.add_event_detect(self.sw, GPIO.FALLING, callback=self.toggleMute, bouncetime=100)
+        GPIO.add_event_detect(self.sw, GPIO.FALLING, callback=self.toggleMute, bouncetime=500)
 
 
     def setVolume(self, volume, silent = False):
@@ -55,7 +55,7 @@ class cattrotar:
 
         else:
             self.volume = volume
-            print(round(self.volume))
+            print('Setting volume to ' + str(round(self.volume)))
             if not silent:
                 self.screen.display(round(self.volume))
             # todo - actually call call catt here
@@ -69,7 +69,19 @@ class cattrotar:
             while True:
                 clkState = GPIO.input(self.clk)
                 dtState = GPIO.input(self.dt)
-                if clkState != clkLastState:
+                sleep(.001)
+                clkState2 = GPIO.input(self.clk)
+                dtState2 = GPIO.input(self.dt)
+                sleep(.001)
+                clkState3 = GPIO.input(self.clk)
+                dtState3 = GPIO.input(self.dt)
+                if clkState != clkLastState and\
+                        clkState == clkState2 and\
+                        clkState2 == clkState3 and\
+                        clkState == clkState3 and\
+                        dtState == dtState2 and\
+                        dtState2 == dtState3 and\
+                        dtState == dtState3:
                     self.button = 0
                     print("DEBUG start clkState: " + str(clkState) + " dtState: " + str(dtState) + " self.volume: " + str(self.volume) + " newVolume: " + str(newVolume))
                     if dtState != clkState:
@@ -82,7 +94,7 @@ class cattrotar:
                         self.setVolume(newVolume)
 
                 clkLastState = clkState
-                # sleep(0.001)
+                sleep(0.005)
         except KeyboardInterrupt:
             print("\nkeyboard killed the process")
         finally:
