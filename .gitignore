@@ -1,2 +1,8 @@
 .idea
+__pycache__
 venv
+*.json
+*lock
+*.txt
+config.py
+error.log

@@ -1,3 +1,4 @@
+# todo: put these in readme.md
 # enable i2c with and install
 # follow https://learn.adafruit.com/monochrome-oled-breakouts/python-setup
 # python3 -m pip install Pillow
@@ -12,6 +13,7 @@ import logging, sys, os
 # import catt.api as cat_api
 # print("catt lib loaded...")
 logging.basicConfig(filename=os.path.dirname(os.path.abspath(__file__)) + "/error.log")
+
 
 class cattrotar:
 
@@ -38,7 +40,6 @@ class cattrotar:
         GPIO.setup(self.sw, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
         GPIO.add_event_detect(self.sw, GPIO.FALLING, callback=self.toggleMute, bouncetime=500)
-
 
     def setVolume(self, volume, silent = False):
         if volume < 0:
@@ -67,14 +68,19 @@ class cattrotar:
         try:
             print("Started cattrotar!");
             while True:
+                # nukeMike suggests maybe doing debouncing in software by checking
+                # the GPIO values a few times before trusting them
+                deboucnce_wait = 0.001
                 clkState = GPIO.input(self.clk)
                 dtState = GPIO.input(self.dt)
-                sleep(.001)
+                sleep(deboucnce_wait)
                 clkState2 = GPIO.input(self.clk)
                 dtState2 = GPIO.input(self.dt)
-                sleep(.001)
+                sleep(deboucnce_wait)
                 clkState3 = GPIO.input(self.clk)
                 dtState3 = GPIO.input(self.dt)
+
+                # see if we got a valid change
                 if clkState != clkLastState and\
                         clkState == clkState2 and\
                         clkState2 == clkState3 and\
@@ -82,6 +88,7 @@ class cattrotar:
                         dtState == dtState2 and\
                         dtState2 == dtState3 and\
                         dtState == dtState3:
+                    # reset button state to be up
                     self.button = 0
                     print("DEBUG start clkState: " + str(clkState) + " dtState: " + str(dtState) + " self.volume: " + str(self.volume) + " newVolume: " + str(newVolume))
                     if dtState != clkState:
@@ -89,12 +96,14 @@ class cattrotar:
                     else:
                         newVolume -= .5
 
+                    # only if new volume has changed more than .5 and it's different than prior
+                    # volume levels do we actually update volume
                     if newVolume % 1 == 0 and lastVolume != newVolume:
                         lastVolume = newVolume
                         self.setVolume(newVolume)
 
                 clkLastState = clkState
-                sleep(0.005)
+                sleep(0.001)
         except KeyboardInterrupt:
             print("\nkeyboard killed the process")
         finally:
@@ -114,10 +123,6 @@ class cattrotar:
             self.setVolume(self.preMuteVolume)
 
 
-
 if __name__ == "__main__":
     cr = cattrotar()
     cr.main()
-
-
-
