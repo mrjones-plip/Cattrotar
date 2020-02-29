@@ -3,7 +3,6 @@ print("Loading base libraries...")
 import socket, time
 from RPi import GPIO
 from time import sleep
-from Oled import Oled
 import logging, sys, os
 from Oled import Oled
 print("Loading catt lib...")
@@ -37,7 +36,7 @@ class cattrotar:
         print('Trying to initialize screen on default i2c bus...')
         try:
             self.screen = Oled(48);
-            self.show(';)')
+            self.screen.display(';)')
             sleep(.5)
         except Exception as error:
             logging.error(logging.exception(error))
@@ -80,7 +79,7 @@ class cattrotar:
 
         elif volume > 100:
             if not silent:
-                self.show("MAX")
+                self.screen.display("MAX")
             print("Max volume!")
             sleep(0.5)
             self.show(round(self.volume))
@@ -128,7 +127,7 @@ class cattrotar:
 
                 # empty screen after 10 seconds
                 if (time.time() - self.last_screen_update) > 10:
-                    self.show(' ')
+                    self.screen.display(' ')
 
                 clkLastState = clkState
                 sleep(0.001)
@@ -137,9 +136,9 @@ class cattrotar:
             print("\nkeyboard killed the process")
 
         finally:
-            self.show('Bye!')
+            self.screen.display('Bye!')
             sleep(0.5)
-            self.show(' ')
+            self.screen.display(' ')
             print('cattrotar exiting')
             GPIO.cleanup()
 
