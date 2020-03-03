@@ -20,7 +20,7 @@ These steps assume you have your Pi set up with Raspbian, that it's booted up, c
 to the same WiFi as your Chromecast. If your Chromecast is on a different network, but 
 you can get to it by IP, the
 config supports IPs instead of Chromecast names.  It also assumes you're using the `pi`
-default user with a home directory of `/home/pi` and that you have both 
+default user with a home directory of `/home/pi` and that you have [python3](https://www.python.org/downloads/), 
 [pip3](https://pip.pypa.io/en/stable/installing/) and optionally 
 [virtualenv](https://virtualenv.pypa.io/en/stable/) installed:
 

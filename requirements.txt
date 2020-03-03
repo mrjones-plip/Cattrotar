@@ -2,3 +2,5 @@ catt
 adafruit_ssd1306
 retrying
 Pillow
+RPi.GPIO
+gpiod

@@ -13,4 +13,7 @@ sw = 23
 # how big for the font to be on the screen
 font_size = 55
 
+# set to 'raspberry' for raspberry pi or 'orange' or orange pi zero
+board_type = 'raspberry'
+
 debug = True

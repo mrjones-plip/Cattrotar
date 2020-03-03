@@ -1,19 +1,22 @@
 print("Trying to start cattrotar...")
 print("Loading base libraries...")
 import socket, time
-from RPi import GPIO
 from time import sleep
 import logging, sys, os
-from Oled import Oled
-print("Loading catt lib...")
-import catt.api as cat_api
 logging.basicConfig(filename=os.path.dirname(os.path.abspath(__file__)) + "/error.log")
 try:
     import config
 except ModuleNotFoundError as e:
     logging.error(logging.exception(e))
     sys.exit("ERROR: Couldn't find file 'config.py'. Did you copy and edit 'config.dist.py' per readme.md?")
-
+if config.board_type == 'orange':
+    import OPi.GPIO as GPIO  # for Ubuntu on orange pi zero - https://github.com/Jeremie-C/OrangePi.GPIO
+if config.board_type == 'raspberry':
+    from RPi import GPIO  # for rasbpian on raspberry pi
+if config.use_display:
+    from Oled import Oled
+print("Loading catt lib...")
+import catt.api as cat_api
 # todo: put these in readme.md
 # enable i2c with and install
 # follow https://learn.adafruit.com/monochrome-oled-breakouts/python-setup
@@ -48,7 +51,11 @@ class cattrotar:
                 logging.error(logging.exception(error))
                 sys.exit('ERROR Could not access screen: ' + str(error))
 
-        GPIO.setmode(GPIO.BCM)
+        if config.board_type == 'orange':
+            GPIO.setboard(GPIO.ZERO)  # for orange pi zero
+            GPIO.setmode(GPIO.BOARD)  # for orange pi zero
+        if config.board_type == 'raspberry':
+            GPIO.setmode(GPIO.BCM)  # for rasbpian on raspberry pi
         GPIO.setup(config.clk, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(config.dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(config.sw, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
@@ -78,7 +85,7 @@ class cattrotar:
 
         elif volume > 100:
             if not silent:
-                self.screen.display("MAX")
+                self.show("MAX")
             print("Max volume!")
             sleep(0.5)
             self.show(round(self.volume))
@@ -94,7 +101,7 @@ class cattrotar:
 
     def show(self, text, size=config.font_size):
         if config.use_display:
-            self.screen.display(text, size)
+            self.show(text, size)
             self.last_screen_update = time.time()
 
     def main(self):
@@ -136,9 +143,10 @@ class cattrotar:
             print("\nkeyboard killed the process")
 
         finally:
-            self.screen.display('Bye!')
+            self.show('Bye!')
             sleep(0.5)
-            self.screen.display(' ')
+            self.show(' ')
+            self.show(' ')
             print('cattrotar exiting')
             GPIO.cleanup()
 
