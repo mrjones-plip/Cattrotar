@@ -9,7 +9,7 @@ This is in a **non-functional state** as I get the port from  [Cattmate](https:/
 ## Hardware
 
 * Raspbery Pi - I used a [Raspberry Pi Model 3B Rev 1.2](https://amzn.to/2REZXwb)
-* [Rotary Encorder](https://amzn.to/2VlHF4W) - Comes with jumper cables too!
+* Rotary Encorder - Either [with jumper cables](https://amzn.to/2VlHF4W) or [without](https://amzn.to/2Ih01fA)!
 * 0.96" SSD1336 OLED Screen (_optional_) - I use [these from MakerFocus](https://amzn.to/2PKMQqL)
 * [Chromecast](https://en.wikipedia.org/wiki/Chromecast) - any sort will do, original, audio or ultra
 
