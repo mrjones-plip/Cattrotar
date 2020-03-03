@@ -3,9 +3,11 @@
 Use a Raspbery Pi, a GPIO rotary encoder and optionally a screen to control the volume of your chromecast. 
 This a port of [Cattmate](https://github.com/Ths2-9Y-LqJt6/cattmate) to use GPIO devices instead of USB devices.
 
+![](./cattrotar.jpeg)
+
 ## Status
 
-All working except mute.  See [#3](https://github.com/Ths2-9Y-LqJt6/Cattrotar/issues/3)
+This project is considered stable and  working except mute.  See [#3](https://github.com/Ths2-9Y-LqJt6/Cattrotar/issues/3).
 
 ## Hardware
 
@@ -49,16 +51,20 @@ get you started ([thx Pi Hut](https://thepihut.com/blogs/raspberry-pi-tutorials/
     sudo systemctl enable cattrotar
     sudo systemctl start cattrotar
     ```
-
+   
+You should be good to go!
  
-You should be good to go!  
-
-# Troubleshooting 
+## Troubleshooting 
 
 You can debug the system in syslog with `sudo tail -f /var/log/syslog`. I try to do a lot 
-of testing and explicit have `except` errors that explicitly tell you what went wrong
+of testing and have `except` errors that explicitly tell you what went wrong
 and how to fix it.  If all else fails, open an issue and I'l try and help ya!
 
+## Orange Pi Support
+
+I've added experimental support for [Orange Pi Zero boards](http://www.orangepi.org/orangepizero/). The screen
+doesn't work and I've had problems getting around details as seen in [#4](https://github.com/Ths2-9Y-LqJt6/Cattrotar/issues/4),
+but it does work if you do some hand holding!
 
 ## Releases
 
