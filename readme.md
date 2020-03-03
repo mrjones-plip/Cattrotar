@@ -5,7 +5,7 @@ This a port of [Cattmate](https://github.com/Ths2-9Y-LqJt6/cattmate) to use GPIO
 
 ## Status
 
-All working except mute.  See #3
+All working except mute.  See [#3](https://github.com/Ths2-9Y-LqJt6/Cattrotar/issues/3)
 
 ## Hardware
 
@@ -62,5 +62,6 @@ and how to fix it.  If all else fails, open an issue and I'l try and help ya!
 
 ## Releases
 
-* 3 mar 2020 v0.2 - All working except mute (see #3). Fixed #1 
+* 3 mar 2020 v0.2 - All working except mute (see [#3](https://github.com/Ths2-9Y-LqJt6/Cattrotar/issues/3)). Fixed 
+[#1](https://github.com/Ths2-9Y-LqJt6/Cattrotar/issues/1) 
 * 24 Feb 2020 v0.1 - First Post! 
