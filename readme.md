@@ -27,10 +27,20 @@ default user with a home directory of `/home/pi` and that you have both
  `git clone https://github.com/Ths2-9Y-LqJt6/cattrotar.git /home/pi/cattrotar; cd /home/pi/cattmate`
 1. Create your own virtualenv and activate it `python3 -m venv venv;. venv/bin/activate` (_optional_)
 1. Install all the python prerequisites with `pip3 install -r requirements.txt`
-1. Create your own config file `cp config.dist.py config.dist` and edit `config.dist` with 
-the names or IPs
-of the chromecasts you want to use (ony first one supported right now ;) and whether you want
-to use an external I2C screen or not
+1. Connect your rotary encoder to these GPIO pins. You're welcome to use different ones, but be
+sure to update your `config.py` on the next step. See [this diagram](rotary-encoder_bb_1024x1024.png) to help
+get you started ([thx Pi Hut](https://thepihut.com/blogs/raspberry-pi-tutorials/how-to-use-a-rotary-encoder-with-the-raspberry-pi)):
+    ```python
+    clk = 17
+    dt = 18
+    sw = 23
+    + = 3.3
+    GND = Ground 
+    ```
+1. Create your own config file `cp config.dist.py config.dist` and edit `config.dist` if needed:
+   1. names or IPs of the chromecasts you want to use (ony first one supported right now ;)
+   1. whether you want to use an external I2C screen or not
+   1. the pins you'll use for the rotary encoder
 1. Copy the systemd file into place, reload systemd, start and enable it:
     ```bash
     sudo cp cattrotar.service /etc/systemd/system/
@@ -38,13 +48,14 @@ to use an external I2C screen or not
     sudo systemctl enable cattrotar
     sudo systemctl start cattrotar
     ```
+
  
 You should be good to go!  
 
 # Troubleshooting 
 
 You can debug the system in syslog with `sudo tail -f /var/log/syslog`. I try to do a lot 
-of testing and explicit have `except` errors that expictly tell you what went wrong
+of testing and explicit have `except` errors that explicitly tell you what went wrong
 and how to fix it.  If all else fails, open an issue and I'l try and help ya!
 
 

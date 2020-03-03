@@ -25,22 +25,11 @@ class cattrotar:
 
     def __init__(self):
 
-        self.clk = 17
-        self.dt = 18
-        self.sw = 23
         self.volume = 1
         self.preMuteVolume = self.volume
         self.button = 0
         self.last_screen_update = time.time()
         self.cast = False
-        print('Trying to initialize screen on default i2c bus...')
-        try:
-            self.screen = Oled(48);
-            self.screen.display(';)')
-            sleep(.5)
-        except Exception as error:
-            logging.error(logging.exception(error))
-            sys.exit('ERROR Could not access screen: ' + str(error))
 
         print('Trying to get handle to Chromecast ' + config.chromecasts[0] + '...')
         try:
@@ -49,11 +38,21 @@ class cattrotar:
             logging.error(logging.exception(error))
             sys.exit("ERROR: Couldn't connect to '" + config.chromecasts[0] + "'. Check config.py and name/IP.")
 
+        if config.use_display:
+            print('Trying to initialize screen on default i2c bus...')
+            try:
+                self.screen = Oled();
+                self.show(';)')
+                sleep(.5)
+            except Exception as error:
+                logging.error(logging.exception(error))
+                sys.exit('ERROR Could not access screen: ' + str(error))
+
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.clk, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(self.dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.setup(self.sw, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.add_event_detect(self.sw, GPIO.FALLING, callback=self.toggleMute, bouncetime=500)
+        GPIO.setup(config.clk, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(config.dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(config.sw, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.add_event_detect(config.sw, GPIO.FALLING, callback=self.toggleMute, bouncetime=500)
 
     def get_cast_handle(self, name_or_ip):
         try:
@@ -93,20 +92,21 @@ class cattrotar:
                 self.show(round(self.volume))
             return volume
 
-    def show(self, text):
-        self.screen.display(text)
-        self.last_screen_update = time.time()
+    def show(self, text, size=config.font_size):
+        if config.use_display:
+            self.screen.display(text, size)
+            self.last_screen_update = time.time()
 
     def main(self):
         lastVolume = self.volume
-        clkLastState = GPIO.input(self.clk)
+        clkLastState = GPIO.input(config.clk)
         newVolume = lastVolume
         try:
             print("Started cattrotar!");
             while True:
 
-                clkState = GPIO.input(self.clk)
-                dtState = GPIO.input(self.dt)
+                clkState = GPIO.input(config.clk)
+                dtState = GPIO.input(config.dt)
 
                 # see if we got a change since last iteration of loop
                 if clkState != clkLastState:
@@ -127,7 +127,7 @@ class cattrotar:
 
                 # empty screen after 10 seconds
                 if (time.time() - self.last_screen_update) > 10:
-                    self.screen.display(' ')
+                    self.show(' ')
 
                 clkLastState = clkState
                 sleep(0.001)
