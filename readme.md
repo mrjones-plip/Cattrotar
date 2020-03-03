@@ -1,10 +1,11 @@
 # Cattrotar
 
-Use a Raspbery Pi, a GPIO rotary encoder and optionally a screen to control the volume of your chromecast. This a port of [Cattmate](https://github.com/Ths2-9Y-LqJt6/cattmate) to use GPIO devices instead of USB devices.
+Use a Raspbery Pi, a GPIO rotary encoder and optionally a screen to control the volume of your chromecast. 
+This a port of [Cattmate](https://github.com/Ths2-9Y-LqJt6/cattmate) to use GPIO devices instead of USB devices.
 
 ## Status
 
-This is in a **non-functional state** as I get the port from  [Cattmate](https://github.com/Ths2-9Y-LqJt6/cattmate) working and figure how to use GPIO devices!
+All working except mute.  See #3
 
 ## Hardware
 
@@ -61,4 +62,5 @@ and how to fix it.  If all else fails, open an issue and I'l try and help ya!
 
 ## Releases
 
+* 3 mar 2020 v0.2 - All working except mute (see #3). Fixed #1 
 * 24 Feb 2020 v0.1 - First Post! 
